@@ -377,9 +377,13 @@
 
 		/*提供给用户的接口，删除某个时间轴上所有时间段，并重新设置*/
 		set : function (obj) {
+			var delD=obj.tOf;
 			var setTimeArray = obj.setTimeArray;
 			if (Object.prototype.toString.call(setTimeArray) == "[object Array]") {
-				removeAll(this);
+				if(delD==true){
+					removeAll(this);
+				}
+				
 				if (0 === setTimeArray.length) {
 					return;
 				}
@@ -974,49 +978,31 @@
             </div>';
 
 		var lan = _gLanguage;
-		var editTextObj = [
-			["Mon.", "星期一"][lan],
-			["Tue.", "星期二"][lan],
-			["Wed.", "星期三"][lan],
-			["Thu.", "星期四"][lan],
-			["Fri.", "星期五"][lan],
-			["Sat.", "星期六"][lan],
-			["Sun.", "星期日"][lan]
-		]
 		var obj = {
-			'context' : context,
-			'editHeaderTitle' : ["Copy To", "复制到"][lan],
-			'editTextObj' : editTextObj,
-			'checkAllName' : ["Check All", "全选"][lan],
-			'saveName' : ["Save", "保存"][lan],
-			'cancelName' : ["Cancel", "取消"][lan]
+			'context' : context
 		}
 
 		editDivString = _.template(editDivString);
 		var dom = editDivString(obj);
 		$("#" + context.mountId).after(dom);
-		var objEle="#editDiv" + context.timeSliderNum+" "+".delImg";
-        $(objEle).click(function (i,ele) {
+		var objEle="#editDiv" + context.timeSliderNum+" "+".delImg";//del
+		var objEleOr="#editDiv" + context.timeSliderNum+" "+".editImg";//add
+		
+        $(objEle).click(function (e) {
         	if (window.confirm(["Do you want to delete all time periods on this timeline?", "是否要删除此时间轴上的所有时间段"][lan])) {
 				removeAll(context);
 			}
         });
-        
-
-//		$("#editDiv" + context.timeSliderNum).click(function (e) {
-//			if ($(e.target).attr("class")) {
-//				if ($(e.target).attr("class") == "editImg") {
-//					
-//					
-//				} else if ($(e.target).attr("class") == "delImg") {
-//					if (window.confirm(["Do you want to delete all time periods on this timeline?", "是否要删除此时间轴上的所有时间段"][lan])) {
-//						removeAll(context);
-//					}
-//				}
-//			}
-//		})
-		
-		
+        $(objEleOr).click(function (e) {
+        	var objMe=context;
+        	var timeRange=null;
+			var initTime=["00:00:00-00:30:00"]; 
+        	 objMe.set({
+        	 	 tOf:false,
+			     setTimeArray:initTime,
+			     setEventsArray:null            
+		     });
+        });
 	}
 
 	/*复制函数：
