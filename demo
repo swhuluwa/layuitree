@@ -1,0 +1,11 @@
+function setRange(param){
+	//设置时间段
+	var initTime=["00:00-23:59"]; 
+	var timeS1=new TimeSlider({
+	    id:param.id,//挂载在id为"timeslider1"的元素下
+	    language:"cn",//中文
+	    defaultTime:initTime,
+	    defaultEvents:null     
+	});
+	delete initTime,timeS1;
+}
